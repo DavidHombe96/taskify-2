@@ -1,28 +1,15 @@
 import { appErr } from "../utils/appErr.js";
 import { User } from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
-import { comparePassword, hashedPassword } from "../utils/passwordConfig.js";
+import { comparePassword } from "../utils/passwordConfig.js";
+import { userCaseRegister } from "../../useCases/User/userCaseRegister.js";
 
 export const registerUserController = async (req, res, next) => {
-	const { lastname, firstname, email, password } = req.body;
 	try {
-		const userFound = await User.findOne({ email });
-
-		if (userFound) {
-			return next(
-				appErr("Este email já se encontra registado, tente fazer o login", 409)
-			);
-		}
-
-		const newUser = await User.create({
-			firstname,
-			lastname,
-			email,
-			password: hashedPassword(password),
-		});
+		const newUser = await userCaseRegister(req.body)
 
 		if (!newUser) {
-			return next(appErr("Não foi possível o usuário", 400));
+			return next(appErr("Não foi possível registar o usuário, tente novamente", 400));
 		}
 
 		res.status(201).json({
