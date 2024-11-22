@@ -3,6 +3,7 @@ import  {dbConnect}  from "./database/database.js";
 import { userRouter } from "./routes/userRoutes.js";
 import { taskRouter } from "./routes/taskRoutes.js";
 import { globalErrHandler } from "./middleware/globalErrHandler.js";
+import cors from "cors"
 
 const startServer = () => {
 	const app = express();
@@ -10,6 +11,7 @@ const startServer = () => {
 
 	app.use(globalErrHandler)
 	app.use(express.json());
+	app.use(cors());
 
 	// Routas
 	app.use("/api/v1/users", userRouter);
