@@ -81,9 +81,6 @@ export const updateTaskController = async (req, res, next) => {
 	const { title, description, priority, status } = req.body;
 	try {
 
-		console.log("Id: ", id)
-		console.log("Auth User: ", req.authUser)
-
 		const allowedPriorityField = ['Necessária','Importante','Urgente']
 
 		if (!allowedPriorityField.includes(priority)) {
@@ -128,7 +125,7 @@ export const updateTaskController = async (req, res, next) => {
 	}
 };
 
-export const changeTaskStatus = async (req, res) => {
+export const changeTaskStatus = async (req, res, next) => {
 	try {
 		const { id } = req.params;
 		const { status } = req.body;
@@ -158,11 +155,11 @@ export const changeTaskStatus = async (req, res) => {
 			data: updatedTaskStatus,
 		});
 	} catch (error) {
-		res.json(error.message || "Erro ao atualizar a tarefa" );
+		next(appErr(error.message));
 	}
 };
 
-export const deleteTaskController = async (req, res) => {
+export const deleteTaskController = async (req, res,next) => {
 	try {
 		const { id } = req.params;
 
@@ -181,6 +178,6 @@ export const deleteTaskController = async (req, res) => {
 			message: "Tarefa apagada",
 		});
 	} catch (error) {
-		res.json(error.message || "Erro ao apagar a tarefa");
+		next(appErr(error.message));
 	}
 };

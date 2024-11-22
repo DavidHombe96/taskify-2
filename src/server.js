@@ -2,13 +2,13 @@ import express from "express";
 import  {dbConnect}  from "./database/database.js";
 import { userRouter } from "./routes/userRoutes.js";
 import { taskRouter } from "./routes/taskRoutes.js";
-import { errorMiddleware } from "./middleware/errorHandle.js";
+import { globalErrHandler } from "./middleware/globalErrHandler.js";
 
 const startServer = () => {
 	const app = express();
 	const PORT = process.env.PORT || 50001;
 
-	app.use(errorMiddleware)
+	app.use(globalErrHandler)
 	app.use(express.json());
 
 	// Routas
