@@ -2,7 +2,7 @@ import { appErr } from "../utils/appErr.js";
 import { User } from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
 import { comparePassword } from "../utils/passwordConfig.js";
-import { userCaseRegister } from "../../useCases/User/userCaseRegister.js";
+import { userCaseRegister } from "../useCases/User/userCaseRegister.js";
 
 export const registerUserController = async (req, res, next) => {
 	try {

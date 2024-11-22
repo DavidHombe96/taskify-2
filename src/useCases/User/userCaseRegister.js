@@ -1,5 +1,5 @@
-import { User } from "../../src/models/User.js";
-import { hashedPassword } from "../../src/utils/passwordConfig.js";
+import { User } from "../../models/User.js";
+import { hashedPassword } from "../../utils/passwordConfig.js";
 
 export const userCaseRegister = async (registerDTO) => {
 
