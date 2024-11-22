@@ -3,6 +3,11 @@
 
 ## Requisitos Técnicos
  - Backend: Node.js com Express para a criação de APIs RESTful. Use MongoDB como banco de dados.
+#### Links
+  - MongoDB Compass : https://www.mongodb.com/try/download/compass
+  - Node : https://nodejs.org/pt
+  - ExpressJs : https://expressjs.com/
+
 ## Funcionalidades Principais
 1. Cadastro e Autenticação de Usuários [x] <br>
 
@@ -22,30 +27,40 @@
 
 ## Rotas
 
-   1. Usuários <br>
+1. Autenticação <br>
+   - Registar: (POST)
 
-     Registo: http://localhost:5000/api/v1/users/register (POST)
-     Login: http://localhost:5000/api/v1/users/login (POST)
+   		 http://localhost:5000/api/v1/users/register
+   - Logar: (POST)
 
-   2. Tarefas <br>
+   		 http://localhost:5000/api/v1/users/login
+2. Tarefas <br>
+   - Criar uma tarefa: (POST)
 
-     Criar uma tarefa: http://localhost:5000/api/v1/tasks (POST)
+   		 http://localhost:5000/api/v1/tasks
+   - Listar todas as tarefas:	(GET)
 
-     Listar todas as tarefas: http://localhost:5000/api/v1/tasks (GET)
+ 			http://localhost:5000/api/v1/tasks
+   - Listar uma tarefa: (GET)
 
-     Listar uma tarefas: http://localhost:5000/api/v1/tasks/id (GET)
+ 			http://localhost:5000/api/v1/tasks/id
+   - Atualizar uma tarefa: (PUT)
 
-     Atualizar a tarefa: http://localhost:5000/api/v1/tasks/id  (PUT)
+ 			http://localhost:5000/api/v1/tasks/id
+   - Atualizar o estado de uma tarefa:  (PATCH)
 
-     Atualizar o estado da tarefa: http://localhost:5000/api/v1/tasks/changeStatus/id  (PATCH)
+ 			http://localhost:5000/api/v1/tasks/changeStatus/id
+   - Deletar uma tarefa:  (DELETE)
 
-     Deleta a tarefa: http://localhost:5000/api/v1/tasks/id  (DELETE)
-   3. Filtragem <br>
+ 			http://localhost:5000/api/v1/tasks/id
 
-     Filtrar tarefa por Estado: http://localhost:5000/api/v1/tasks?status=Pendente (GET)
+1. Filtragem <br>
+   - Filtrar tarefa por Estado: (GET)
 
-     Filtrar tarefa por prioridade: http://localhost:5000/api/v1/tasks?priority=Importante (GET)
+   		 http://localhost:5000/api/v1/tasks?status=Pendente
+   - Filtrar tarefa por prioridade: (GET)
 
-     Filtrar por Combinação: http://localhost:5000/api/v1/tasks?status=Pendente&priority=Importante (GET)
+   		 http://localhost:5000/api/v1/users/login
+   - Filtrar por Combinação: (GET)
 
-
+   		 http://localhost:5000/api/v1/tasks?status=Pendente&priority=Importante
