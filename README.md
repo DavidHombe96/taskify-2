@@ -7,6 +7,7 @@
   - MongoDB Compass : https://www.mongodb.com/try/download/compass
   - Node : https://nodejs.org/pt
   - ExpressJs : https://expressjs.com/
+  - Insomnia : https://insomnia.rest/download
 
 ## Funcionalidades Principais
 1. Cadastro e Autenticação de Usuários [x] <br>
