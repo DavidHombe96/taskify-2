@@ -4,7 +4,7 @@ import { generateToken } from "../utils/generateToken.js";
 import { userCaseRegister } from "../useCases/User/userCaseRegister.js";
 import { userCaseLogin } from "../useCases/User/userCaseLogin.js";
 import { userCaseProfile } from "../useCases/User/userCaseProfile.js";
-import { userCAseUpdate } from "../useCases/User/userCaseUpdate.js";
+import { userCaseUpdate } from "../useCases/User/userCaseUpdate.js";
 import { userCaseDelete } from "../useCases/User/userCaseDelete.js";
 
 export const registerUserController = async (req, res, next) => {
@@ -30,6 +30,12 @@ export const registerUserController = async (req, res, next) => {
 			},
 		});
 	} catch (error) {
+		if (error.code === 11000) {
+		return res.status(400).json({
+			success: false,
+			message: "Este email já pertence a um outro usuario, tente fazer um novo registo",
+		});
+	}
 		next(appErr(error.message));
 	}
 };
@@ -82,17 +88,24 @@ export const profilelUserController = async (req, res, next) => {
 
 export const updateUserController = async (req, res, next) => {
 	try {
-		const {updatedUser, isUserFound } = await userCAseUpdate(req.body, req.authUser);
+		const {updatedUser, isUserFound } = await userCaseUpdate(req.body, req.authUser);
 
 		if (isUserFound) {
 			return next(appErr("Usuário não encontrado", 404));
 		}
+
 
 		res.status(200).json({
 			success: "true",
 			data: updatedUser,
 		});
 	} catch (error) {
+		if (error.code === 11000) {
+			return res.status(400).json({
+				success: false,
+				message: "Este email já pertence a um outro usuario",
+			});
+		}
 		next(appErr(error.message));
 	}
 };
