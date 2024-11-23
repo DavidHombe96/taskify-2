@@ -6,7 +6,11 @@ import { userCaseLogin } from "../useCases/User/userCaseLogin.js";
 
 export const registerUserController = async (req, res, next) => {
 	try {
-		const newUser = await userCaseRegister(req.body)
+		const {newUser, isUserFound} = await userCaseRegister(req.body)
+
+		if (isUserFound) {
+			return next(appErr("Este usuário já se encontra registado, tente fazer o login", 409));
+		}
 
 		if (!newUser) {
 			return next(appErr("Não foi possível registar o usuário, tente novamente", 400));

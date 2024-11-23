@@ -4,12 +4,15 @@ import { hashedPassword } from "../../utils/passwordConfig.js";
 export const userCaseRegister = async (registerDTO) => {
 
 	const userFound = await User.findOne({email: registerDTO.email});
+	let isUserFound = false
 
 	if (userFound) {
-		throw new Error("Este usuário já se encontra registado, tente fazer o login");
+		return {
+			isUserFound: true,
+		}
 	}
 
-	const passwoHashed = hashedPassword(registerDTO.password)
+	const passwoHashed =  hashedPassword(registerDTO.password)
 
 	const newUser = await User.create({
 		firstname: registerDTO.firstname,
@@ -18,5 +21,5 @@ export const userCaseRegister = async (registerDTO) => {
 		password: passwoHashed,
 	});
 
-	return newUser
+	return {newUser, isUserFound}
 }
