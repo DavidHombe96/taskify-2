@@ -5,6 +5,7 @@ import { userCaseRegister } from "../useCases/User/userCaseRegister.js";
 import { userCaseLogin } from "../useCases/User/userCaseLogin.js";
 import { userCaseProfile } from "../useCases/User/userCaseProfile.js";
 import { userCAseUpdate } from "../useCases/User/userCaseUpdate.js";
+import { userCaseDelete } from "../useCases/User/userCaseDelete.js";
 
 export const registerUserController = async (req, res, next) => {
 	try {
@@ -66,7 +67,7 @@ export const profilelUserController = async (req, res, next) => {
 			return next(appErr("Perfil do usuário não encontrado", 404));
 
 		res.status(200).json({
-			message: "true",
+			success: "true",
 			data: {
 				firstname: userProfile.firstname,
 				lastname: userProfile.lastname,
@@ -88,7 +89,7 @@ export const updateUserController = async (req, res, next) => {
 		}
 
 		res.status(200).json({
-			status: "true",
+			success: "true",
 			data: updatedUser,
 		});
 	} catch (error) {
@@ -98,16 +99,16 @@ export const updateUserController = async (req, res, next) => {
 
 export const deleteUserController = async (req, res, next) => {
 	try {
-		const deletedUser = await User.findByIdAndDelete(req.authUser);
+		const deletedUser = await userCaseDelete(req.authUser);
 		if (!deletedUser)
 			return next(appErr("Usuário não encontrado ou deletado ", 404));
 
-		res.status(204).json({
-			status: "true",
+		res.status(200).json({
+			success: "true",
 			message: "Usuário deletado",
 		});
 	} catch (error) {
 		next(appErr(error.message));
 	}
-}; 
+};
 
