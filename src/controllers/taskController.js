@@ -1,38 +1,34 @@
 import { Task } from "../models/Task.js";
+import { changeTaskStatusCase } from "../useCases/Task/changeTaskStatusCase.js";
+import { createTaskCase } from "../useCases/Task/createTaskCase.js";
+import { deleteTaskCase } from "../useCases/Task/deleteTaskCase.js";
+import { getTaskCase } from "../useCases/Task/getTaskCase.js";
+import { getTasksCase } from "../useCases/Task/getTasksCase.js";
+import { updateTaskCase } from "../useCases/Task/updateTaskCase.js";
 import { appErr } from "../utils/appErr.js";
 
 export const createTaskController = async (req, res, next) => {
-	const { title, description, priority, status } = req.body;
 	try {
+		const { newTask, isStatus, isPriority } = await createTaskCase(
+			req.body,
+			req.authUser
+		);
 
-		const allowedPriorityField = ['Necessária','Importante','Urgente']
-
-		if (!allowedPriorityField.includes(priority)) {
+		if (!isPriority) {
 			res.status(404).json({
-				message: "Aplicação só permite as prioridades Necessária ,Importante e Urgente",
+				message:
+					"Aplicação só permite as prioridades Necessária ,Importante e Urgente",
 			});
 		}
 
-		const allowedStatusFields = ["Pendente", "Concluída"]
-
-		if (!allowedStatusFields.includes(status)) {
+		if (!isStatus) {
 			res.status(404).json({
 				message: "Aplicação só permite os status Pendente ou Concluída",
 			});
 		}
 
-		const newTask = await Task.create({
-			title,
-			description,
-			priority,
-			status,
-			userId: req.authUser,
-		});
-
 		if (!newTask) {
-			return next(
-				appErr("Não foi possível criar a tarefa", 400)
-			);
+			return next(appErr("Não foi possível criar a tarefa", 400));
 		}
 
 		res.status(201).json({
@@ -46,13 +42,14 @@ export const createTaskController = async (req, res, next) => {
 
 export const getTasksController = async (req, res, next) => {
 	try {
-		const tasks = await Task.find({ userId: req.authUser});
+		const tasks = await getTasksCase(req.query, req.authUser);
 
-		if (tasks.length == 0) return next(appErr("Nenhuma tarefa encontrada", 404));
+		if (tasks.length == 0)
+			return next(appErr("Nenhuma tarefa encontrada", 404));
 
 		res.status(200).json({
-			message: true,
-			message: tasks,
+			success: true,
+			data: tasks,
 		});
 	} catch (error) {
 		res.json(error.message);
@@ -61,111 +58,107 @@ export const getTasksController = async (req, res, next) => {
 
 export const getTaskController = async (req, res, next) => {
 	try {
-		const { id } = req.params;
+		const taskFounded = await getTaskCase(req.params, req.authUser);
 
-		const taskFounded = await Task.findOne({_id: id, userId: req.authUser});
-
-		if (!taskFounded) return next(appErr("Tarefa não encontrada, pode ser que não tenhas permissão", 404));
+		if (!taskFounded)
+			return next(
+				appErr("Tarefa não encontrada, pode ser que não tenhas permissão", 404)
+			);
 
 		res.status(200).json({
-			status: true,
+			success: true,
 			data: taskFounded,
 		});
 	} catch (error) {
+		if (error.name === "CastError") {
+			return res.status(400).json({
+				success: false,
+				message: "Id inválido",
+			});
+		}
 		res.json(error.message);
 	}
 };
 
 export const updateTaskController = async (req, res, next) => {
-	const { id } = req.params;
-	const { title, description, priority, status } = req.body;
+	const { updatedTask, isPriority, isStatus } = await updateTaskCase(
+		req.params,
+		req.body,
+		req.authUser
+	);
 	try {
 
-		const allowedPriorityField = ['Necessária','Importante','Urgente']
+		if (!updatedTask)
+			return next(
+				appErr(
+					"Tarefa não encontrada, pode ser que não tem permissão para atualizar",
+					404
+				)
+			);
 
-		if (!allowedPriorityField.includes(priority)) {
+		if (!isPriority) {
 			res.status(404).json({
-				message: "Aplicação só permite as prioridades Necessária ,Importante e Urgente",
+				message:
+					"Aplicação só permite as prioridades Necessária ,Importante e Urgente",
 			});
 		}
 
-		const allowedStatusFields = ["Pendente", "Concluída"]
-
-		if (!allowedStatusFields.includes(status)) {
+		if (!isStatus) {
 			res.status(404).json({
 				message: "Aplicação só permite os status Pendente ou Concluída",
 			});
 		}
 
-		const updatedFields = {
-			title: title || undefined,
-			description: description || undefined,
-			priority: priority || undefined,
-			status: status || undefined,
-			updatedAt: Date.now()
-		}
-
-		const updatedTask = await Task.findOneAndUpdate(
-			{ _id: id, userId: req.authUser},
-			updatedFields,
-			{
-				new: true,
-				runValidators:true
-			}
-		)
-
-		if (!updatedTask) return next(appErr("Tarefa não encontrada, pode ser que não tem permissão para atualizar", 404));
-
 		res.status(200).json({
-			status: true,
+			success: true,
 			data: updatedTask,
 		});
 	} catch (error) {
+		if (error.name === "CastError") {
+			return res.status(400).json({
+				success: false,
+				message: "Id inválido",
+			});
+		}
 		res.json(error.message);
 	}
 };
 
 export const changeTaskStatus = async (req, res, next) => {
 	try {
-		const { id } = req.params;
-		const { status } = req.body;
 
-		if (!["Pendente", "Concluída"].includes(status)) {
-			res.status(404).json({
-				message: "Aplicação só permite os status Pendente ou Concluída",
-			});
-		}
+		const { updatedTaskStatus, isStatus  } = await changeTaskStatusCase(req.params, req.body, req.authUser)
 
-		const taskFound = await Task.findOne({ _id: id, userId: req.authUser })
-
-		if (!taskFound) {
+		if (!updatedTaskStatus) {
 			res.status(404).json({
 				message: "Tarefa não encontrada",
 			});
 		}
 
-		taskFound.status = status || taskFound.status
-
-		const updatedTaskStatus = await taskFound.save();
-
-
+		if (!isStatus) {
+			res.status(404).json({
+				message: "Aplicação só permite os status Pendente ou Concluída",
+			});
+		}
 
 		res.status(200).json({
-			status: true,
+			success: true,
 			data: updatedTaskStatus,
 		});
 	} catch (error) {
+		if (error.name === "CastError") {
+			return res.status(400).json({
+				success: false,
+				message: "Id inválido",
+			});
+		}
 		next(appErr(error.message));
 	}
 };
 
-export const deleteTaskController = async (req, res,next) => {
+export const deleteTaskController = async (req, res, next) => {
 	try {
-		const { id } = req.params;
-
-		console.log("ID: ",id)
-
-		 const deletedTask =await Task.findOneAndDelete({ _id: id, userId: req.authUser});
+		const deletedTask = await deleteTaskCase(req.params, req.authUser)
 
 		if (!deletedTask) {
 			res.status(404).json({
@@ -173,11 +166,17 @@ export const deleteTaskController = async (req, res,next) => {
 			});
 		}
 
-		res.status(204).json({
-			status: true,
+		res.status(200).json({
+			success: true,
 			message: "Tarefa apagada",
 		});
 	} catch (error) {
+		if (error.name === "CastError") {
+			return res.status(400).json({
+				success: false,
+				message: "Id inválido",
+			});
+		}
 		next(appErr(error.message));
 	}
 };
