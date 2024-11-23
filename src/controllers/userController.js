@@ -121,16 +121,3 @@ export const deleteUserController = async (req, res, next) => {
 	}
 };
 
-// export const getUsersController = async (req, res) => {
-// 	try {
-// 		const users = await User.find();
-// 		if (!users) return next(appErr("Usuários não encontrados", 404));
-
-// 		res.status(200).json({
-// 			message: "true",
-// 			data: users,
-// 		});
-// 	} catch (error) {
-// 		next(appErr(error.message));
-// 	}
-// };

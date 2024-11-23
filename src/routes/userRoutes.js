@@ -1,5 +1,5 @@
 import { Router } from "express"
-import { deleteUserController, getUsersController, loginUserController, profilelUserController, registerUserController, updateUserController } from "../controllers/userController.js"
+import { deleteUserController, loginUserController, profilelUserController, registerUserController, updateUserController } from "../controllers/userController.js"
 import { isLogin } from "../middleware/isLogin.js"
 
 export const userRouter = Router()
@@ -18,6 +18,3 @@ userRouter.put("/profile/update", isLogin, updateUserController)
 
 // // api/v1/users/:id
 userRouter.delete("/profile/delete", isLogin, deleteUserController)
-
-// // api/v1/users/
-// userRouter.get("/", getUsersController)
