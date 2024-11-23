@@ -4,6 +4,7 @@ import { generateToken } from "../utils/generateToken.js";
 import { userCaseRegister } from "../useCases/User/userCaseRegister.js";
 import { userCaseLogin } from "../useCases/User/userCaseLogin.js";
 import { userCaseProfile } from "../useCases/User/userCaseProfile.js";
+import { userCAseUpdate } from "../useCases/User/userCaseUpdate.js";
 
 export const registerUserController = async (req, res, next) => {
 	try {
@@ -79,26 +80,12 @@ export const profilelUserController = async (req, res, next) => {
 };
 
 export const updateUserController = async (req, res, next) => {
-	const { firstname, lastname, email, password } = req.body;
 	try {
-		const user = await User.findById(req.authUser);
+		const {updatedUser, isUserFound } = await userCAseUpdate(req.body, req.authUser);
 
-		if (!user) {
+		if (isUserFound) {
 			return next(appErr("Usuário não encontrado", 404));
 		}
-
-		if (password) {
-			user.password = hashedPassword(password);
-		}
-
-		user.firstname = firstname || user.firstname,
-		user.lastname = lastname || user.lastname,
-		user.email = email || user.email,
-		user.updatedAt = Date.now();
-
-		const updatedUser = await user.save();
-
-
 
 		res.status(200).json({
 			status: "true",
@@ -122,5 +109,5 @@ export const deleteUserController = async (req, res, next) => {
 	} catch (error) {
 		next(appErr(error.message));
 	}
-};
+}; 
 
