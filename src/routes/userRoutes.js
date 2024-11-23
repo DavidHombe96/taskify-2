@@ -20,4 +20,4 @@ userRouter.put("/profile/update", isLogin, updateUserController)
 userRouter.delete("/profile/delete", isLogin, deleteUserController)
 
 // // api/v1/users/
-userRouter.get("/", getUsersController)
+// userRouter.get("/", getUsersController)
