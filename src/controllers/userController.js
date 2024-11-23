@@ -1,8 +1,8 @@
 import { appErr } from "../utils/appErr.js";
 import { User } from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
-import { comparePassword } from "../utils/passwordConfig.js";
 import { userCaseRegister } from "../useCases/User/userCaseRegister.js";
+import { userCaseLogin } from "../useCases/User/userCaseLogin.js";
 
 export const registerUserController = async (req, res, next) => {
 	try {
@@ -13,7 +13,7 @@ export const registerUserController = async (req, res, next) => {
 		}
 
 		res.status(201).json({
-			status: "true",
+			success: "true",
 			data: {
 				firstname:newUser.firstname,
 				lastname:newUser.lastname,
@@ -28,21 +28,19 @@ export const registerUserController = async (req, res, next) => {
 };
 
 export const loginUserController = async (req, res, next) => {
-	const { email, password } = req.body;
 	try {
-		const userFound = await User.findOne({ email });
+		const  {userFound, isPasswordMatched} = await userCaseLogin(req.body)
 
 		if (!userFound || userFound === null || userFound === undefined) {
 			return next(appErr("Este email não se encontra registado", 401));
-		}
-
-		const isPasswordMatched = comparePassword(password, userFound.password);
+			}
 
 		if (!isPasswordMatched) {
 			return next(appErr("Credencial inválida, verifique sua senha", 401));
 		}
+
 		res.status(200).json({
-			status: "true",
+			success: "true",
 			firstname: userFound.firstname,
 			lastname: userFound.lastname,
 			email: userFound.email,
