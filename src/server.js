@@ -26,9 +26,10 @@ const startServer = () => {
 
 	app.listen(PORT, () => {
 
-		process.env.ENVIRONMENT_ENV === "PRODUCTION" ?
-			console.log(`🚀 Servidor a rodar na porta ${PORT}`) :
-			console.log(`🚀 Servidor a rodar no endereço:http://localhost:${PORT}`);;
+		// process.env.ENVIRONMENT_ENV === "PRODUCTION" ?
+		// 	console.log(`🚀 Servidor a rodar na porta ${PORT}`) :
+		// 	console.log(`🚀 Servidor a rodar no endereço:http://localhost:${PORT}`);
+		console.log(`🚀 Servidor a rodar no endereço:http://localhost:${PORT}`)
 
 
 	});
