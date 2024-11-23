@@ -6,7 +6,7 @@ export const userCaseRegister = async (registerDTO) => {
 	const userFound = await User.findOne({email: registerDTO.email});
 
 	if (userFound) {
-		throw new Error("Este usu;ario já se encontra registado, tente fazer o login");
+		throw new Error("Este usuário já se encontra registado, tente fazer o login");
 	}
 
 	const passwoHashed = hashedPassword(registerDTO.password)

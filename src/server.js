@@ -7,7 +7,7 @@ import cors from "cors"
 
 const startServer = () => {
 	const app = express();
-	const PORT = process.env.PORT || 50001;
+	const PORT = process.env.PORT || 5001;
 
 	app.use(globalErrHandler)
 	app.use(express.json());
