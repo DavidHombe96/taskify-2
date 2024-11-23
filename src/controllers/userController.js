@@ -3,6 +3,7 @@ import { User } from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
 import { userCaseRegister } from "../useCases/User/userCaseRegister.js";
 import { userCaseLogin } from "../useCases/User/userCaseLogin.js";
+import { userCaseProfile } from "../useCases/User/userCaseProfile.js";
 
 export const registerUserController = async (req, res, next) => {
 	try {
@@ -58,7 +59,7 @@ export const loginUserController = async (req, res, next) => {
 
 export const profilelUserController = async (req, res, next) => {
 	try {
-		const userProfile = await User.findById(req.authUser);
+		const userProfile = await userCaseProfile(req.authUser)
 
 		if (!userProfile)
 			return next(appErr("Perfil do usuário não encontrado", 404));
