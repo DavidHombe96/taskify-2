@@ -1,10 +1,14 @@
 # Taskify
 
+## Contexto
+Você foi contratado para desenvolver uma aplicação de gerenciamento de tarefas chamada "Taskify". A aplicação deve permitir que os usuários criem, visualizem, atualizem e removam tarefas. Além disso, deve ser possível atribuir uma prioridade às tarefas e marcá-las como concluídas.
+
 
 ## Requisitos Técnicos
  - Backend: Node.js com Express para a criação de APIs RESTful. Use MongoDB como banco de dados.
 #### Links
   - MongoDB Compass : https://www.mongodb.com/try/download/compass
+  - MongoDB Cloud : https://cloud.mongodb.com
   - Node : https://nodejs.org/pt
   - ExpressJs : https://expressjs.com/
   - Insomnia : https://insomnia.rest/download
@@ -31,37 +35,37 @@
 1. Autenticação <br>
    - Registar: (POST)
 
-   		 http://localhost:5000/api/v1/users/register
+   		 https://api-taskify.up.railway.app/api/v1/users/register
    - Logar: (POST)
 
-   		 http://localhost:5000/api/v1/users/login
+   		 https://api-taskify.up.railway.app/api/v1/users/login
 2. Tarefas <br>
    - Criar uma tarefa: (POST)
 
-   		 http://localhost:5000/api/v1/tasks
+   		 https://api-taskify.up.railway.app/api/v1/tasks
    - Listar todas as tarefas:	(GET)
 
- 			http://localhost:5000/api/v1/tasks
+ 		 https://api-taskify.up.railway.app/api/v1/tasks
    - Listar uma tarefa: (GET)
 
- 			http://localhost:5000/api/v1/tasks/id
+ 		 https://api-taskify.up.railway.app/api/v1/tasks/id
    - Atualizar uma tarefa: (PUT)
 
- 			http://localhost:5000/api/v1/tasks/id
+ 		 https://api-taskify.up.railway.app/api/v1/tasks/id
    - Atualizar o estado de uma tarefa:  (PATCH)
 
- 			http://localhost:5000/api/v1/tasks/changeStatus/id
+ 		 https://api-taskify.up.railway.app/api/v1/tasks/changeStatus/id
    - Deletar uma tarefa:  (DELETE)
 
- 			http://localhost:5000/api/v1/tasks/id
+ 		 https://api-taskify.up.railway.app/api/v1/tasks/id
 
-1. Filtragem <br>
+3. Filtragem <br>
    - Filtrar tarefa por Estado: (GET)
 
-   		 http://localhost:5000/api/v1/tasks?status=Pendente
-   - Filtrar tarefa por prioridade: (GET)
+   		 https://api-taskify.up.railway.app/api/v1/tasks?status=Pendente
+   - Filtrar tarefa por Prioridade: (GET)
 
-   		 http://localhost:5000/api/v1/users/login
+   		 https://api-taskify.up.railway.app/api/v1/tasks?priority=Urgente
    - Filtrar por Combinação: (GET)
 
-   		 http://localhost:5000/api/v1/tasks?status=Pendente&priority=Importante
+   		 https://api-taskify.up.railway.app/api/v1/tasks?status=Pendente&priority=Importante
