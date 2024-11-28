@@ -1,5 +1,4 @@
 import { appErr } from "../utils/appErr.js";
-import { User } from "../models/User.js";
 import { generateToken } from "../utils/generateToken.js";
 import { userCaseRegister } from "../useCases/User/userCaseRegister.js";
 import { userCaseLogin } from "../useCases/User/userCaseLogin.js";
@@ -12,11 +11,16 @@ export const registerUserController = async (req, res, next) => {
 		const {newUser, isUserFound} = await userCaseRegister(req.body)
 
 		if (isUserFound) {
-			return next(appErr("Este usuário já se encontra registado, tente fazer o login", 409));
+			const { message, code, stack }  =  next(appErr(res, "Este usuário já se encontra registado, tente fazer o login", 409));
+			return {
+				code,
+				message,
+				stack
+			}
 		}
 
 		if (!newUser) {
-			return next(appErr("Não foi possível registar o usuário, tente novamente", 400));
+			return next(appErr(res, "Não foi possível registar o usuário, tente novamente", 400));
 		}
 
 		res.status(201).json({
@@ -30,12 +34,6 @@ export const registerUserController = async (req, res, next) => {
 			},
 		});
 	} catch (error) {
-		if (error.code === 11000) {
-		return res.status(400).json({
-			success: false,
-			message: "Este email já pertence a um outro usuario, tente fazer um novo registo",
-		});
-	}
 		next(appErr(error.message));
 	}
 };
@@ -45,11 +43,11 @@ export const loginUserController = async (req, res, next) => {
 		const  {userFound, isPasswordMatched} = await userCaseLogin(req.body)
 
 		if (!userFound || userFound === null || userFound === undefined) {
-			return next(appErr("Este email não se encontra registado", 401));
+			return next(appErr(res, "Este email não se encontra registado", 404));
 			}
 
 		if (!isPasswordMatched) {
-			return next(appErr("Credencial inválida, verifique sua senha", 401));
+			return next(appErr(res, "Credencial inválida, verifique sua senha", 401));
 		}
 
 		res.status(200).json({

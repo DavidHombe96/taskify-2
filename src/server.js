@@ -4,11 +4,16 @@ import { userRouter } from "./routes/userRoutes.js";
 import { taskRouter } from "./routes/taskRoutes.js";
 import { globalErrHandler } from "./middleware/globalErrHandler.js";
 import cors from "cors"
+import { setupSwagger } from "./swagger.js";
 
 const startServer = () => {
 	const app = express();
 	const PORT = process.env.PORT || 5001;
 
+	// ConfiguraçÕes do Swagger
+	setupSwagger(app);
+
+	// Middlewares
 	app.use(globalErrHandler)
 	app.use(express.json());
 	app.use(cors());
@@ -25,13 +30,10 @@ const startServer = () => {
 	});
 
 	app.listen(PORT, () => {
-
 		process.env.ENVIRONMENT_ENV === "PRODUCTION" ?
 			console.log(`🚀 Servidor a rodar na porta ${PORT}`) :
 			console.log(`🚀 Servidor a rodar no endereço:http://localhost:${PORT}`);
-		// console.log(`🚀 Servidor a rodar no endereço:http://localhost:${PORT}`)
-
-
+			console.log(`📄 Swager a rodar no endereço:http://localhost:${PORT}/api/v1/api-docs`);
 	});
 };
 

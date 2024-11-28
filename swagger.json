@@ -1,0 +1,110 @@
+{
+	"openapi": "3.0.0",
+	"info": {
+		"title": "Taskify",
+		"description": "API to task manager",
+		"version": "1.0.0"
+	},
+	"servers": [
+		{
+			"url": "http://localhost:5000/api/v1",
+			"description": "Local Server"
+		},
+		{
+			"url": "https://api-taskify.up.railway.app/api/v1/",
+			"description": "Production Server"
+		}
+	],
+	"paths": {
+		"/users/register": {
+			"post":{
+				"summary": "Register a new user",
+				"tags": ["Unauthenticated"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserRegister"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "User registered successfully"
+					},
+					"400": {
+						"description": "User register failed"
+					},
+					"409": {
+						"description": "User already exist"
+					}
+				}
+			}
+		},
+		"/users/login": {
+			"post":{
+				"summary": "Login of user",
+				"tags": ["Unauthenticated"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UserLogin"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Logged user"
+					},
+					"401": {
+						"description": "Invalid credentials, email or password are incorrets"
+					}
+				}
+			}
+		}
+	},
+	"components": {
+		"securitySchemes": {
+			"bearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"bearerFormat": "JWT"
+			}
+		},
+		"schemas": {
+			"UserRegister": {
+				"type": "object",
+				"properties": {
+					"firstname": { "type": "string" },
+					"lastname": { "type": "string" },
+					"email": { "type": "string" },
+					"password": { "type": "string" }
+				},
+				"required": ["firstname", "lastname", "email", "password"],
+				"example": {
+					"firstname": "John",
+					"lastname": "Doe",
+					"email": "john.doe@gmail.com",
+					"password": "mirants@2025"
+				}
+			},
+			"UserLogin": {
+				"type": "object",
+				"properties": {
+					"email": { "type": "string" },
+					"password": { "type": "string" }
+				},
+				"required": ["firstname", "lastname", "email", "password"],
+				"example": {
+					"email": "john.doe@gmail.com",
+					"password": "mirants@2025"
+				}
+			}
+		}
+	}
+}

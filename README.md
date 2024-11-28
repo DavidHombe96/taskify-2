@@ -47,42 +47,13 @@
     - Permitir que os usuários filtrem suas tarefas por  prioridade (Necessária, Importante ou Urgente) <br>
     - Permitir que os usuários filtrem suas tarefas por status (concluídas ou pendentes).<br>
 
-## Rotas
+## Documentação
 
-1. Autenticação <br>
-   - Registar: (POST)
+1. Servidor Local <br>
+   - URL:
 
-   		 https://api-taskify.up.railway.app/api/v1/users/register
-   - Logar: (POST)
+   		 http://localhost:5000/api/v1/api-docs
+2. Servidor Online <br>
+   - URL
 
-   		 https://api-taskify.up.railway.app/api/v1/users/login
-2. Tarefas <br>
-   - Criar uma tarefa: (POST)
-
-   		 https://api-taskify.up.railway.app/api/v1/tasks
-   - Listar todas as tarefas:	(GET)
-
- 		 https://api-taskify.up.railway.app/api/v1/tasks
-   - Listar uma tarefa: (GET)
-
- 		 https://api-taskify.up.railway.app/api/v1/tasks/id
-   - Atualizar uma tarefa: (PUT)
-
- 		 https://api-taskify.up.railway.app/api/v1/tasks/id
-   - Atualizar o estado de uma tarefa:  (PATCH)
-
- 		 https://api-taskify.up.railway.app/api/v1/tasks/changeStatus/id
-   - Deletar uma tarefa:  (DELETE)
-
- 		 https://api-taskify.up.railway.app/api/v1/tasks/id
-
-3. Filtragem <br>
-   - Filtrar tarefa por Estado: (GET)
-
-   		 https://api-taskify.up.railway.app/api/v1/tasks?status=Pendente
-   - Filtrar tarefa por Prioridade: (GET)
-
-   		 https://api-taskify.up.railway.app/api/v1/tasks?priority=Urgente
-   - Filtrar por Combinação: (GET)
-
-   		 https://api-taskify.up.railway.app/api/v1/tasks?status=Pendente&priority=Importante
+   		 https://api-taskify.up.railway.app/api/v1/api-docs
