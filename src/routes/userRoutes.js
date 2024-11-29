@@ -14,7 +14,7 @@ userRouter.post("/login", loginUserController)
 userRouter.get("/profile",isLogin, profilelUserController)
 
 // // api/v1/users/:id
-userRouter.put("/profile/update", isLogin, updateUserController)
+userRouter.put("/profile", isLogin, updateUserController)
 
 // // api/v1/users/:id
-userRouter.delete("/profile/delete", isLogin, deleteUserController)
+userRouter.delete("/profile", isLogin, deleteUserController)

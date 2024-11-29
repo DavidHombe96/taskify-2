@@ -4,11 +4,9 @@ import { hashedPassword } from "../../utils/passwordConfig.js";
 export const userCaseUpdate = async(updateDTO, authUser) => {
 
 	const user = await User.findById(authUser);
-	let isUserFound = false
-
 	if(!user) {
-		return { isUserFound: true}
-	} 
+		return { isUserFound: false}
+	}
 
 	if (updateDTO.password) {
 		user.password = hashedPassword(updateDTO.password);
@@ -23,7 +21,7 @@ export const userCaseUpdate = async(updateDTO, authUser) => {
 
 	return {
 		updatedUser,
-		isUserFound
+		isUserFound: true
 	}
 
 }

@@ -11,12 +11,7 @@ export const registerUserController = async (req, res, next) => {
 		const {newUser, isUserFound} = await userCaseRegister(req.body)
 
 		if (isUserFound) {
-			const { message, code, stack }  =  next(appErr(res, "Este usuário já se encontra registado, tente fazer o login", 409));
-			return {
-				code,
-				message,
-				stack
-			}
+			return next(appErr(res, "Este usuário já se encontra registado, tente fazer o login", 409));
 		}
 
 		if (!newUser) {
@@ -34,7 +29,8 @@ export const registerUserController = async (req, res, next) => {
 			},
 		});
 	} catch (error) {
-		next(appErr(error.message));
+		// next(appErr(error.message));
+		res.status(500).json({ message: "Internal server error"})
 	}
 };
 
@@ -52,11 +48,12 @@ export const loginUserController = async (req, res, next) => {
 
 		res.status(200).json({
 			success: "true",
+			token: generateToken(userFound._id),
 			firstname: userFound.firstname,
 			lastname: userFound.lastname,
 			email: userFound.email,
 			tasks: userFound.tasks,
-			token: generateToken(userFound._id),
+
 		});
 	} catch (error) {
 		next(appErr(error.message));
@@ -68,7 +65,7 @@ export const profilelUserController = async (req, res, next) => {
 		const userProfile = await userCaseProfile(req.authUser)
 
 		if (!userProfile)
-			return next(appErr("Perfil do usuário não encontrado", 404));
+			return next(appErr(res, "Perfil do usuário não encontrado", 404));
 
 		res.status(200).json({
 			success: "true",
@@ -89,8 +86,11 @@ export const updateUserController = async (req, res, next) => {
 		const {updatedUser, isUserFound } = await userCaseUpdate(req.body, req.authUser);
 
 		if (isUserFound) {
-			return next(appErr("Usuário não encontrado", 404));
+			return next(appErr("Este email já pertence a um outro usuario 2", 409));
 		}
+		// if (!isUserFound) {
+		// 	return next(appErr("Usuário não encontrado", 404));
+		// }
 
 
 		res.status(200).json({

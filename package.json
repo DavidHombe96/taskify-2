@@ -1,7 +1,7 @@
 {
   "name": "taskify",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "src/server.js",
   "type": "module",
   "repository": "https://github.com/DavidHombe96/Taskify.git",
   "author": "DavidHombe96 <90213056+DavidHombe96@users.noreply.github.com>",
