@@ -39,6 +39,9 @@
 					},
 					"409": {
 						"description": "User already exist"
+					},
+					"500": {
+						"description": "Internal server error"
 					}
 				}
 			}
@@ -87,7 +90,7 @@
 						"description": "User profile not Found"
 					},
 					"500": {
-						"description": "Internal Server Error"
+						"description": "Internal server error"
 					}
 				}
 			},
@@ -115,6 +118,12 @@
 					},
 					"401": {
 						"description": "User not authenticated"
+					},
+					"409": {
+						"description": "This email already exist"
+					},
+					"500": {
+						"description": "Internal server error"
 					}
 				}
 			},
@@ -128,10 +137,16 @@
 				],
 				"responses": {
 					"200": {
-						"description": "Data of profile of user"
+						"description": "User deleted"
 					},
 					"401": {
 						"description": "User not authenticated"
+					},
+					"404": {
+						"description": "User not found"
+					},
+					"500": {
+						"description": "Internal server error"
 					}
 				}
 			}
