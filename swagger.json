@@ -103,7 +103,6 @@
 					}
 				],
 				"requestBody": {
-					"required": false,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -153,16 +152,49 @@
 		},
 		"/tasks": {
 			"get": {
-				"summary": "Lista todas as tarefas",
+				"summary": "Lista todas as tarefas com ou sem filtros",
 				"tags": ["Authenticated"],
 				"security": [
 					{
 						"bearerAuth": []
 					}
 				],
+				"parameters": [
+					{
+						"name": "status",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": ["Pendente", "Concluída"]
+						}
+					},
+					{
+						"name": "priority",
+						"in": "query",
+						"required": false,
+						"schema": {
+							"type": "string",
+							"enum": ["Necessária", "Importante", "Urgente"]
+						}
+					}
+				],
 				"responses": {
 					"200": {
-						"description": "Todas as tarefas "
+						"description": "Lista todas as tarefas ou filtradas ",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "array",
+									"items": {
+										"$ref": "#/components/schemas/Tasks"
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"description": "Não autorizado"
 					},
 					"404": {
 						"description": "Tarefa não encontrada"
@@ -256,7 +288,6 @@
           }
         ],
 				"requestBody": {
-					"required": false,
 					"content": {
 						"application/json": {
 							"schema": {
@@ -367,6 +398,24 @@
 			}
 		},
 		"schemas": {
+			"Tasks":{
+				"type":"object",
+				"properties":{
+					"id": { "type":"string"},
+					"title": { "type":"string"},
+					"description": { "type":"string"},
+					"status": {
+						"type": "string",
+						"enum":["Pendente", "Concluída"]
+					},
+					"priority": {
+						"type": "string",
+						"enum": ["Necessária", "Importante", "Urgente"]
+					},
+					"createdAt": { "type": "string", "format": "date-time"},
+					"updatedAt": { "type": "string", "format": "date-time"}
+				}
+			},
 			"UserRegister": {
 				"type": "object",
 				"properties": {
@@ -402,12 +451,6 @@
 					"lastname": { "type": "string" },
 					"email": { "type": "string" },
 					"password": { "type": "string" }
-				},
-				"example": {
-					"firstname": "John",
-					"lastname": "Doe",
-					"email": "john.doe@gmail.com",
-					"password": "mirants@2025"
 				}
 			},
 			"TaskCreate": {
@@ -441,12 +484,6 @@
 					"status": { "type": "string",
 					"enum": ["Pendente", "Concluída"]
 				}
-				},
-				"example": {
-					"title": "Ir ao Museu",
-					"description": "Museu da moeda",
-					"priority": "Importante",
-					"status": "Pendente"
 				}
 			},
 			"changeStatus": {
@@ -456,9 +493,6 @@
 						"type": "string",
 						"enum": ["Pendente", "Concluída"]
 					 }
-				},
-				"example": {
-					"status": "Concluída"
 				}
 			}
 
