@@ -10,6 +10,7 @@ const startServer = () => {
 	const app = express();
 	const PORT = process.env.PORT || 5001;
 
+	
 	// ConfiguraçÕes do Swagger
 	setupSwagger(app);
 
