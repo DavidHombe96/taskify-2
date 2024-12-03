@@ -15,20 +15,16 @@ export const createTaskController = async (req, res, next) => {
 		);
 
 		if (!isPriority) {
-			res.status(404).json({
+			res.status(400).json({
 				message:
 					"Aplicação só permite as prioridades Necessária ,Importante e Urgente",
 			});
 		}
 
 		if (!isStatus) {
-			res.status(404).json({
+			res.status(400).json({
 				message: "Aplicação só permite os status Pendente ou Concluída",
 			});
-		}
-
-		if (!newTask) {
-			return next(appErr("Não foi possível criar a tarefa", 400));
 		}
 
 		res.status(201).json({
@@ -97,14 +93,14 @@ export const updateTaskController = async (req, res, next) => {
 			);
 
 		if (!isPriority) {
-			res.status(404).json({
+			res.status(400).json({
 				message:
 					"Aplicação só permite as prioridades Necessária ,Importante e Urgente",
 			});
 		}
 
 		if (!isStatus) {
-			res.status(404).json({
+			res.status(400).json({
 				message: "Aplicação só permite os status Pendente ou Concluída",
 			});
 		}
@@ -136,7 +132,7 @@ export const changeTaskStatus = async (req, res, next) => {
 		}
 
 		if (!isStatus) {
-			res.status(404).json({
+			res.status(400).json({
 				message: "Aplicação só permite os status Pendente ou Concluída",
 			});
 		}
